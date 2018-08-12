@@ -25,15 +25,15 @@ const styles = StyleSheet.create({
 	}
 });
 
-const api = 'https://api.douban.com/v2/movie/in_theaters?s';
+const api = 'https://api.douban.com/v2/movie/in_theaters';
 
 export default  class MyApp extends  Component {
 	state = {
 		Movies: [],
 		refreshing: false,
 	};
-	// start = 0;
-	// count = 12;
+	start = 0;
+	count = 4;
 	refreshing = false;
 	fetchData = (start = 0, count = 3) => {
 		// this.setState({
@@ -58,7 +58,7 @@ export default  class MyApp extends  Component {
 				console.error(error);
 			});
 	}
-	componentDidMount() {
+	async componentDidMount() {
 		this.fetchData();
 	}
 
@@ -69,6 +69,16 @@ export default  class MyApp extends  Component {
 		});
 	};
 
+	fetchMore = async () => {
+		// const json = await this.fetchData(this.start, this.count);
+		const json = this.fetchData(this.start, this.count);
+		if (json) {
+			this.start += this.count - 1;
+			this.setState({
+				Movies: this.state.Movies.concat(json.subjects),
+			});
+		}
+	};
 	render() {
 		const {Movies, refreshing} = this.state;
 		return (
@@ -79,6 +89,8 @@ export default  class MyApp extends  Component {
 					keyExtractor={item => item.id}
 					data = {Movies}
 					onRefresh={this.freshData}
+					onEndReached={this.fetchMore}
+					onEndReachedThreshold={0}
 					refreshing={refreshing}
 					renderItem={({item}) => <Item title={item.title} image={item.images.medium} stars={item.rating.stars}/>}
 				/>
