@@ -8,6 +8,13 @@
 
 import React, { Component } from 'react';
 import {
+	StackNavigator,
+	TabNavigator,
+} from 'react-navigation';
+
+import Teastset from './Teastset';
+
+import {
 	StyleSheet,
 	Text,
 	View,
@@ -18,6 +25,13 @@ import {
 import Item from './components/TQItem';
 
 import MoviesTQ from '../movies';
+
+const AppTQ = StackNavigator({
+	Teastset: {screen: Teastset},
+}, {
+	headerMode: 'screen'
+});
+
 
 const styles = StyleSheet.create({
 	row: {
@@ -79,8 +93,12 @@ export default  class MyApp extends  Component {
 			});
 		}
 	};
+	static navigationOption = {
+		title: 'Welcome',
+	}
 	render() {
 		const {Movies, refreshing} = this.state;
+		const { navigate } = this.props.navigation;
 		return (
 			<View>
 				<FlatList
@@ -92,7 +110,23 @@ export default  class MyApp extends  Component {
 					onEndReached={this.fetchMore}
 					onEndReachedThreshold={0}
 					refreshing={refreshing}
-					renderItem={({item}) => <Item title={item.title} image={item.images.medium} stars={item.rating.stars}/>}
+					// renderItem={({item}) => <Item title={item.title} image={item.images.medium} stars={item.rating.stars}/>}
+					renderItem={({ item }) => {
+						return (<Item
+							title={item.title}
+							image={item.images.medium}
+							stars={item.rating.stars}
+							onPress={() => navigate('Teastset', {
+								// id: item.id,
+								// callback: (data) => {
+								// 	this.setState({
+								// 		childState: data
+								// 	});
+								// }
+							})}
+						/>);
+					}
+					}
 				/>
 			</View>
 		);

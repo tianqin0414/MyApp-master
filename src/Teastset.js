@@ -3,10 +3,10 @@ import {View} from 'react-native';
 
 import {Label} from 'teaset';
 
-export default class HelloWorldApp extends Component {
+export default class Teastset extends Component {
 	render() {
 		return (
-			<View style={{flex: 3, alignItems: 'center', justifyContent: 'center'}}>
+			<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
 				<Label size='xl' text='Hello world!' />
 			</View>
 		);
